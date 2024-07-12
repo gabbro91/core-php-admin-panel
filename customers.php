@@ -22,16 +22,16 @@ if (!$page) {
 }
 
 // If filter types are not selected we show latest added data first
-if (!$filter_col) {
-	$filter_col = 'id';
-}
-if (!$order_by) {
-	$order_by = 'Desc';
-}
+//if (!$filter_col) {
+//	$filter_col = 'id';
+//}
+//if (!$order_by) {
+//	$order_by = 'Desc';
+//}
 
 //Get DB instance. i.e instance of MYSQLiDB Library
 $db = getDbInstance();
-$select = array('id', 'f_name', 'l_name', 'gender', 'phone', 'created_at', 'updated_at');
+$select = array('fk_id_utente', 'denominazione', 'citta_societa', 'telefonoFarmacia', 'provincia_societa', 'emailFarmacia','partita_iva');
 
 //Start building query according to input parameters.
 // If search string
@@ -49,7 +49,7 @@ if ($order_by) {
 $db->pageLimit = $pagelimit;
 
 // Get result of the query.
-$rows = $db->arraybuilder()->paginate('customers', $page, $select);
+$rows = $db->arraybuilder()->paginate('farmacie', $page, $select);
 $total_pages = $db->totalPages;
 
 include BASE_PATH . '/includes/header.php';
@@ -58,7 +58,7 @@ include BASE_PATH . '/includes/header.php';
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-6">
-            <h1 class="page-header">Customers</h1>
+            <h1 class="page-header">Farmacia</h1>
         </div>
         <div class="col-lg-6">
             <div class="page-action-links text-right">
@@ -109,20 +109,21 @@ if ($order_by == 'Desc') {
     <table class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th width="5%">ID</th>
-                <th width="45%">Name</th>
-                <th width="20%">Gender</th>
-                <th width="20%">Phone</th>
+                <th width="5%">Utente</th>
+                <th width="45%">Denominazione</th>
+                <th width="20%">P.IVA</th>
+                <th width="20%">Telefono</th>
                 <th width="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($rows as $row): ?>
             <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo xss_clean($row['f_name'] . ' ' . $row['l_name']); ?></td>
-                <td><?php echo xss_clean($row['gender']); ?></td>
-                <td><?php echo xss_clean($row['phone']); ?></td>
+                <td><?php echo $row['fk_id_utente']; ?></td>
+                <td><?php echo xss_clean($row['denominazione']); ?></td>
+                <td><?php echo xss_clean($row['partita_iva']); ?></td>
+
+                <td><?php echo xss_clean($row['telefonoFarmacia']); ?></td>
                 <td>
                     <a href="edit_customer.php?customer_id=<?php echo $row['id']; ?>&operation=edit" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
                     <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id']; ?>"><i class="glyphicon glyphicon-trash"></i></a>

@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $data_to_store = array_filter($_POST);
 
     //Insert timestamp
-    $data_to_store['created_at'] = date('Y-m-d H:i:s');
+//    $data_to_store['created_at'] = date('Y-m-d H:i:s');
     $db = getDbInstance();
     
-    $last_id = $db->insert('customers', $data_to_store);
+    $last_id = $db->insert('farmacie', $data_to_store);
 
     if($last_id)
     {
@@ -37,7 +37,7 @@ require_once 'includes/header.php';
 <div id="page-wrapper">
 <div class="row">
      <div class="col-lg-12">
-            <h2 class="page-header">Add Customers</h2>
+            <h2 class="page-header">Aggiungi Farmacia</h2>
         </div>
         
 </div>
@@ -51,11 +51,11 @@ require_once 'includes/header.php';
 $(document).ready(function(){
    $("#customer_form").validate({
        rules: {
-            f_name: {
+            denominazione: {
                 required: true,
                 minlength: 3
             },
-            l_name: {
+            indirizzo: {
                 required: true,
                 minlength: 3
             },   
