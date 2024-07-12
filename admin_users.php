@@ -34,7 +34,7 @@ if (!$page)
 // If filter types are not selected we show latest added data first
 if (!$filter_col)
 {
-    $filter_col = 'id';
+    $filter_col = 'id_utente';
 }
 if (!$order_by)
 {
@@ -43,8 +43,8 @@ if (!$order_by)
 
 //Get DB instance. i.e instance of MYSQLiDB Library
 $db = getDbInstance();
-$select = array('id', 'user_name', 'admin_type');
-
+$select = array('id_utente','password','username','email','fk_id_ruolo' );
+$db->where('fk_id_ruolo', '1');
 //Start building query according to input parameters.
 // If search string
 if ($search_string)
@@ -62,7 +62,7 @@ if ($order_by)
 $db->pageLimit = $pagelimit;
 
 // Get result of the query.
-$rows = $db->arraybuilder()->paginate('admin_accounts', $page, $select);
+$rows = $db->arraybuilder()->paginate('acl_utenti', $page, $select);
 $total_pages = $db->totalPages;
 
 include BASE_PATH.'/includes/header.php';
@@ -71,7 +71,7 @@ include BASE_PATH.'/includes/header.php';
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-6">
-            <h1 class="page-header">Admin users</h1>
+            <h1 class="page-header">Users</h1>
         </div>
         <div class="col-lg-6">
             <div class="page-action-links text-right">
@@ -125,20 +125,24 @@ include BASE_PATH.'/includes/header.php';
         <thead>
             <tr>
                 <th width="5%">ID</th>
-                <th width="45%">Name</th>
-                <th width="40%">Admin type</th>
+                <th width="20%">Name</th>
+                <th width="25%">Password</th>
+                <th width="20%">Admin type</th>
+                <th width="20%">Attivo</th>
                 <th width="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($rows as $row): ?>
             <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo htmlspecialchars($row['user_name']); ?></td>
-                <td><?php echo htmlspecialchars($row['admin_type']); ?></td>
+                <td><?php echo $row['id_utente']; ?></td>
+                <td><?php echo htmlspecialchars($row['email']); ?></td>
+                <td><?php echo htmlspecialchars($row['password']); ?></td>
+                <td><?php echo htmlspecialchars($row['fk_id_ruolo']); ?></td>
+                <td>0</td>
                 <td>
-                    <a href="edit_admin.php?admin_user_id=<?php echo $row['id']; ?>&operation=edit" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
-                    <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id']; ?>"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a href="edit_admin.php?admin_user_id=<?php echo $row['id_utente']; ?>&operation=edit" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
+                    <a href="#" class="btn btn-danger delete_btn" data-toggle="modal" data-target="#confirm-delete-<?php echo $row['id_utente']; ?>"><i class="glyphicon glyphicon-trash"></i></a>
                 </td>
             </tr>
             <!-- Delete Confirmation Modal -->

@@ -20,10 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$data_to_update = filter_input_array(INPUT_POST);
 	//Check whether the user name already exists ;
 	$db = getDbInstance();
-	$db->where('user_name', $data_to_update['user_name']);
-	$db->where('id', $admin_user_id, '!=');
+	$db->where('email', $data_to_update['email']);
+	$db->where('id_utente', $admin_user_id, '!=');
 	//print_r($data_to_update['user_name']);die();
-	$row = $db->getOne('admin_accounts');
+	$row = $db->getOne('acl_utenti');
 	//print_r($data_to_update['user_name']);
 	//print_r($row); die();
 
@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$data_to_update['password'] = password_hash($data_to_update['password'], PASSWORD_DEFAULT);
 
 	$db = getDbInstance();
-	$db->where('id', $admin_user_id);
-	$stat = $db->update('admin_accounts', $data_to_update);
+	$db->where('id_utente', $admin_user_id);
+	$stat = $db->update('acl_utenti', $data_to_update);
 
 	if ($stat) {
 		$_SESSION['success'] = "Admin user has been updated successfully";
@@ -60,9 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 //Select where clause
 $db = getDbInstance();
-$db->where('id', $admin_user_id);
+$db->where('id_utente', $admin_user_id);
 
-$admin_account = $db->getOne("admin_accounts");
+$admin_account = $db->getOne("acl_utenti");
 
 // Set values to $row
 

@@ -14,8 +14,8 @@ if($_SESSION['admin_type']!='super'){
 // Delete a user using user_id
 if ($del_id && $_SERVER['REQUEST_METHOD'] == 'POST') {
     
-    $db->where('id', $del_id);
-    $stat = $db->delete('admin_accounts');
+    $db->where('id_utente', $del_id);
+    $stat = $db->delete('acl_utenti');
     if ($stat) {
         $_SESSION['info'] = "User deleted successfully!";
         header('location: admin_users.php');
